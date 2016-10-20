@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
 // N milliseconds. If `immediate` is passed, trigger the function on the
@@ -19,7 +20,6 @@ function debounce(func, wait, immediate) {
   };
 }
 
-
 function getBrowserInfo(){
   var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
   if(/trident/i.test(M[1])){
@@ -37,3 +37,26 @@ function getBrowserInfo(){
     version: M[1]
   };
 }
+
+//============================================================
+// $http responses and socket updates, convert string to dates
+
+var dateRegex = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?([+-][0-2]\d(:?[0-5]\d)?|Z)$/;
+function deserializeDates(object) {
+  var result = object;
+  if (object != null) {
+    result = angular.copy(object);
+    for (var key in result) {
+      var property = result[key];
+      if (typeof property === 'object') {
+        result[key] = deserializeDates(property);
+      } else if (typeof property === 'string' && dateRegex.test(property)) {
+        result[key] = new Date(property);
+      }
+    }
+  }
+  return result;
+}
+
+// $http responses and socket updates, convert string to dates
+//============================================================

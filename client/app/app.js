@@ -14,6 +14,22 @@ angular.module('projectsApp', [
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+
+    // $http response, convert string to dates
+    $httpProvider.defaults.transformResponse = function(data) {
+      try {
+        var object;
+        if (typeof data === 'object') {
+          object = data;
+        } else {
+          object = JSON.parse(data);
+        }
+        return deserializeDates(object);
+      } catch(e) {
+        return data;
+      }
+    };
+
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {

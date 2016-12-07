@@ -17,7 +17,8 @@ module.exports = function (grunt) {
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     buildcontrol: 'grunt-build-control',
-    'gitinfo': 'grunt-gitinfo'
+    gitinfo: 'grunt-gitinfo',
+    replace: 'grunt-text-replace'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -615,6 +616,19 @@ module.exports = function (grunt) {
         }
       }
     },
+
+    replace: {
+      appVer: {
+        src: ['dist/public/app/*.app.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: 'APP_VERSION="unknown"',
+            to: 'APP_VERSION="<%= gitinfo.local.branch.current.SHA %>"'
+          }]
+      }
+    }
+
   });
 
   // Used for delaying livereload until after server has restarted
@@ -717,11 +731,6 @@ module.exports = function (grunt) {
     grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
   });
 
-  grunt.registerTask('testGitInfo', [
-    'gitinfo',
-    'printConfig'
-  ]);
-
   grunt.registerTask('build', [
     'clean:dist',
     'gitinfo',
@@ -739,7 +748,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'replace'
   ]);
 
   grunt.registerTask('default', [

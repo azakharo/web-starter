@@ -19,11 +19,15 @@ module.exports = function (grunt) {
     buildcontrol: 'grunt-build-control'
   });
 
+  grunt.loadNpmTasks('grunt-gitinfo');
+
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
   // Define the configuration for all the tasks
   grunt.initConfig({
+
+    gitinfo: {},
 
     // Project settings
     pkg: grunt.file.readJSON('package.json'),
@@ -710,8 +714,18 @@ module.exports = function (grunt) {
     ]);
   });
 
+  grunt.registerTask('printConfig', function() {
+    grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
+  });
+
+  grunt.registerTask('testGitInfo', [
+    'gitinfo',
+    'printConfig'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
+    'gitinfo',
     'injector:less',
     'concurrent:dist',
     'injector',

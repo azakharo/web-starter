@@ -16,10 +16,9 @@ module.exports = function (grunt) {
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
-    buildcontrol: 'grunt-build-control'
+    buildcontrol: 'grunt-build-control',
+    'gitinfo': 'grunt-gitinfo'
   });
-
-  grunt.loadNpmTasks('grunt-gitinfo');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);

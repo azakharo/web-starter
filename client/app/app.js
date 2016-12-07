@@ -1,5 +1,7 @@
 'use strict';
 
+var APP_VERSION = "unknown";
+
 angular.module('projectsApp', [
   'ngCookies',
   'ngResource',

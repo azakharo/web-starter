@@ -24,4 +24,6 @@ angular.module('projectsApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('thing');
     });
+
+    $scope.appVer = APP_VERSION;
   });

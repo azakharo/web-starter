@@ -4,7 +4,7 @@ angular.module('projectsApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
     var currentUser = {};
     if($cookieStore.get('token')) {
-      currentUser = User.get();
+      User.get().then(user => currentUser = user);
     }
 
     return {
@@ -26,9 +26,13 @@ angular.module('projectsApp')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
+          User.get().then(
+            function (u) {
+              currentUser = u;
+              deferred.resolve(data);
+              return cb();
+            }
+          );
         }).
         error(function(err) {
           this.logout();
@@ -59,16 +63,19 @@ angular.module('projectsApp')
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
 
-        return User.save(user,
+        return User.create(user).then(
           function(data) {
             $cookieStore.put('token', data.token);
-            currentUser = User.get();
-            return cb(user);
+            User.get().then(function (u) {
+              currentUser = u;
+              return cb(user);
+            });
           },
           function(err) {
             this.logout();
             return cb(err);
-          }.bind(this)).$promise;
+          }
+        );
       },
 
       /**
@@ -79,17 +86,8 @@ angular.module('projectsApp')
        * @param  {Function} callback    - optional
        * @return {Promise}
        */
-      changePassword: function(oldPassword, newPassword, callback) {
-        var cb = callback || angular.noop;
-
-        return User.changePassword({ id: currentUser._id }, {
-          oldPassword: oldPassword,
-          newPassword: newPassword
-        }, function(user) {
-          return cb(user);
-        }, function(err) {
-          return cb(err);
-        }).$promise;
+      changePassword: function (oldPassword, newPassword) {
+        return User.changePassword(currentUser._id, oldPassword,newPassword);
       },
 
       /**
@@ -114,13 +112,7 @@ angular.module('projectsApp')
        * Waits for currentUser to resolve before checking if user is logged in
        */
       isLoggedInAsync: function(cb) {
-        if(currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
-            cb(true);
-          }).catch(function() {
-            cb(false);
-          });
-        } else if(currentUser.hasOwnProperty('role')) {
+        if(currentUser.hasOwnProperty('role')) {
           cb(true);
         } else {
           cb(false);

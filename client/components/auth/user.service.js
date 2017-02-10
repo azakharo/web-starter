@@ -1,22 +1,94 @@
 'use strict';
 
 angular.module('projectsApp')
-  .factory('User', function ($resource) {
-    return $resource('/api/users/:id/:controller', {
-      id: '@_id'
-    },
-    {
-      changePassword: {
-        method: 'PUT',
-        params: {
-          controller:'password'
-        }
+  .factory('User', function ($http, $q) {
+    const BASE_PATH = '/api/users';
+
+    return {
+
+      get: function () {
+        const deffered = $q.defer();
+
+        $http.get(`${BASE_PATH}/me`).then(
+          resp => deffered.resolve(resp.data),
+          function (resp) {
+            log(resp.data);
+            deffered.resolve(null);
+          }
+        );
+
+        return deffered.promise;
       },
-      get: {
-        method: 'GET',
-        params: {
-          id:'me'
-        }
+
+      getAll: function () {
+        const deffered = $q.defer();
+
+        $http.get(`${BASE_PATH}/`).then(
+          resp => deffered.resolve(resp.data),
+          function (resp) {
+            log(resp.data);
+            deffered.resolve(null);
+          }
+        );
+
+        return deffered.promise;
+      },
+
+      changePassword: function (userID, oldPass, newPass) {
+        const deffered = $q.defer();
+
+        $http({
+          method: "put",
+          url: `${BASE_PATH}/${userID}/password`,
+          data: {
+            oldPassword: oldPass,
+            newPassword: newPass
+          }
+        }).then(
+          resp => deffered.resolve(),
+          function (resp) {
+            log(resp.data);
+            deffered.reject();
+          }
+        );
+
+        return deffered.promise;
+      },
+
+      create: function (data) {
+        const deffered = $q.defer();
+
+        $http({
+          method: "post",
+          url: `${BASE_PATH}/`,
+          data: data
+        }).then(
+          resp => deffered.resolve(resp.data), // return token
+          function (resp) {
+            log(resp.data);
+            deffered.reject();
+          }
+        );
+
+        return deffered.promise;
+      },
+
+      delete: function (userID) {
+        const deffered = $q.defer();
+
+        $http({
+          method: "delete",
+          url: `${BASE_PATH}/${userID}`
+        }).then(
+          resp => deffered.resolve(),
+          function (resp) {
+            log(resp.data);
+            deffered.reject();
+          }
+        );
+
+        return deffered.promise;
       }
-	  });
+
+    }; // return
   });

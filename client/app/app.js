@@ -4,7 +4,6 @@ var APP_VERSION = "unknown";
 
 angular.module('projectsApp', [
   'ngCookies',
-  'ngResource',
   'ngSanitize',
   'btford.socket-io',
   'ui.router',

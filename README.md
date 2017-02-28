@@ -13,7 +13,7 @@ NOTE: the generator is not required for building the application, only for the d
 
   * Node.js (recommened 6.x).
   * MongoDB (recommened 3.x).
-  * npm install -g bower gulp-cli
+  * npm install -g bower grunt-cli
 
 
 # Installation of packages
@@ -49,3 +49,7 @@ NOTE: the generator is not required for building the application, only for the d
   3. run: docker run -d -p 8080:8080 --name starter webstarter
   4. Now you can open your browser at Your_VM_IP:8080 and see the application's main page
 
+# Run development version in Docker container
+
+  1. run: docker build -f Dockerfile-dev -t webstarter-dev .
+  2. run: docker run -d -p 9000:9000 --name starter-dev webstarter-dev

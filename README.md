@@ -51,5 +51,4 @@ NOTE: the generator is not required for building the application, only for the d
 
 # Run development version in Docker container
 
-  1. run: docker build -f Dockerfile-dev -t webstarter-dev .
-  2. run: docker run -d -p 9000:9000 --name starter-dev webstarter-dev
+  1. run: docker-compose -f docker-compose-dev.yml up

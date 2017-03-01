@@ -19,5 +19,6 @@ COPY ./bower.json /usr/local/webstarter/bower.json
 RUN bower install --allow-root
 
 EXPOSE 9000
+EXPOSE 35729
 
 CMD ["grunt", "serve"]

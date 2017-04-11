@@ -43,7 +43,7 @@ module.exports = function (grunt) {
       dev: {
         options: {
           script: 'server/app.js',
-          debug: true
+          debug: false
         }
       },
       prod: {
@@ -434,12 +434,12 @@ module.exports = function (grunt) {
       server: [
         'babel',
         'jade',
-        'less',
+        'less'
       ],
       test: [
         'babel',
         'jade',
-        'less',
+        'less'
       ],
       debug: {
         tasks: [
@@ -548,7 +548,7 @@ module.exports = function (grunt) {
         files: {
           '.tmp/app/app.css' : '<%= yeoman.client %>/app/app.less'
         }
-      },
+      }
     },
 
     injector: {

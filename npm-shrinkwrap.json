@@ -2136,20 +2136,6 @@
       "resolved": "https://registry.npmjs.org/event-emitter/-/event-emitter-0.3.4.tgz",
       "dev": true
     },
-    "event-stream": {
-      "version": "0.5.3",
-      "from": "event-stream@>=0.5.0 <0.6.0",
-      "resolved": "https://registry.npmjs.org/event-stream/-/event-stream-0.5.3.tgz",
-      "dev": true,
-      "dependencies": {
-        "optimist": {
-          "version": "0.2.8",
-          "from": "optimist@>=0.2.0 <0.3.0",
-          "resolved": "https://registry.npmjs.org/optimist/-/optimist-0.2.8.tgz",
-          "dev": true
-        }
-      }
-    },
     "eventemitter2": {
       "version": "0.4.14",
       "from": "eventemitter2@>=0.4.13 <0.5.0",
@@ -3370,12 +3356,6 @@
       "version": "0.2.3",
       "from": "grunt-ng-annotate@>=0.2.3 <0.3.0",
       "resolved": "https://registry.npmjs.org/grunt-ng-annotate/-/grunt-ng-annotate-0.2.3.tgz",
-      "dev": true
-    },
-    "grunt-nodemon": {
-      "version": "0.2.1",
-      "from": "grunt-nodemon@>=0.2.0 <0.3.0",
-      "resolved": "https://registry.npmjs.org/grunt-nodemon/-/grunt-nodemon-0.2.1.tgz",
       "dev": true
     },
     "grunt-open": {
@@ -5232,26 +5212,6 @@
       "resolved": "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.7.tgz",
       "dev": true
     },
-    "nodemon": {
-      "version": "1.0.20",
-      "from": "nodemon@>=1.0.9 <1.1.0",
-      "resolved": "https://registry.npmjs.org/nodemon/-/nodemon-1.0.20.tgz",
-      "dev": true,
-      "dependencies": {
-        "minimatch": {
-          "version": "0.2.14",
-          "from": "minimatch@>=0.2.14 <0.3.0",
-          "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-0.2.14.tgz",
-          "dev": true
-        },
-        "update-notifier": {
-          "version": "0.1.10",
-          "from": "update-notifier@>=0.1.8 <0.2.0",
-          "resolved": "https://registry.npmjs.org/update-notifier/-/update-notifier-0.1.10.tgz",
-          "dev": true
-        }
-      }
-    },
     "nopt": {
       "version": "1.0.10",
       "from": "nopt@>=1.0.10 <1.1.0",
@@ -5996,12 +5956,6 @@
       "version": "1.0.10",
       "from": "proxy-addr@>=1.0.3 <1.1.0",
       "resolved": "https://registry.npmjs.org/proxy-addr/-/proxy-addr-1.0.10.tgz"
-    },
-    "ps-tree": {
-      "version": "0.0.3",
-      "from": "ps-tree@0.0.3",
-      "resolved": "https://registry.npmjs.org/ps-tree/-/ps-tree-0.0.3.tgz",
-      "dev": true
     },
     "pump": {
       "version": "0.3.5",

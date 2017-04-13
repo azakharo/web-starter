@@ -14,7 +14,6 @@ module.exports = function (grunt) {
     express: 'grunt-express-server',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn',
     buildcontrol: 'grunt-build-control',
     gitinfo: 'grunt-gitinfo',
     replace: 'grunt-text-replace'
@@ -249,13 +248,6 @@ module.exports = function (grunt) {
         cwd: '.tmp',
         src: ['{app,components}/**/*.html'],
         dest: '.tmp/tmp-templates.js'
-      }
-    },
-
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/public/*.html']
       }
     },
 
@@ -530,11 +522,6 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', function () {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve']);
-  });
-
   grunt.registerTask('printConfig', function() {
     grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
   });
@@ -552,7 +539,6 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'uglify',
     'rev',
@@ -561,7 +547,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
     'build'
   ]);
 };

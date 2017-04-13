@@ -8,7 +8,7 @@ angular.module('projectsApp')
     var ioSocket = io('', {
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
-      path: '/socket.io-client'
+      path: '/socket.io-client/dist'
     });
 
     var socket = socketFactory({

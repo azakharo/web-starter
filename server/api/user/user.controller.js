@@ -24,13 +24,26 @@ exports.index = function(req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  var newUser = new User(req.body);
-  newUser.provider = 'local';
-  newUser.role = 'user';
-  newUser.save(function(err, user) {
-    if (err) return validationError(res, err);
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: 60*5*60 });
-    res.json({ token: token });
+  // Check email is specified
+  if (!req.body.email) {
+    return res.status(403).send('Email is not specified.');
+  }
+  // Check that user with that email doesn't exist
+  User.findOne({email: req.body.email}, function(err, existingUser) {
+    if(err) throw err;
+    if(existingUser) {
+      return res.status(403).send('The specified email address is already in use.');
+    }
+
+    // Create new user and return token
+    var newUser = new User(req.body);
+    newUser.provider = 'local';
+    newUser.role = 'user';
+    newUser.save(function(err, user) {
+      if (err) return validationError(res, err);
+      var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: 60*5*60 });
+      res.json({ token: token });
+    });
   });
 };
 

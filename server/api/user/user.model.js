@@ -9,32 +9,7 @@ var UserSchema = new Schema({
   name: String,
   email: {
     type: String,
-    lowercase: true,
-    validate: [
-      // Validate empty email
-      {
-        validator: function(email) {
-          if (authTypes.indexOf(this.provider) !== -1) return true;
-          return email.length;
-        },
-        message: 'Email cannot be blank'
-      },
-      // Validate email is not taken
-      {
-        validator: function(value) {
-          var self = this;
-          this.constructor.findOne({email: value}, function(err, user) {
-            if(err) throw err;
-            if(user) {
-              if(self.id === user.id) return true;
-              return false;
-            }
-            return true;
-          });
-        },
-        message: 'The specified email address is already in use.'
-      }
-    ]
+    lowercase: true
   },
   role: {
     type: String,
@@ -84,7 +59,7 @@ UserSchema
   });
 
 /**
- * Other validations
+ * Validations
  */
 
 

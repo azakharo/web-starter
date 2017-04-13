@@ -66,7 +66,7 @@ angular.module('projectsApp')
           resp => deffered.resolve(resp.data), // return token
           function (resp) {
             log(resp.data);
-            deffered.reject();
+            deffered.reject(resp.data);
           }
         );
 

@@ -6,8 +6,11 @@
 
 var config = require('./environment');
 
+let thing = require('../api/thing/thing.model');
+
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
+  thing.unsubscribe(socket);
 }
 
 // When the user connects.. perform this
@@ -18,7 +21,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/thing/thing.socket').register(socket);
+  thing.subscribe(socket);
 }
 
 module.exports = function (socketio) {

@@ -1,4 +1,3 @@
-/* global io */
 'use strict';
 
 angular.module('projectsApp')
@@ -28,8 +27,9 @@ angular.module('projectsApp')
        * @param {Array} array
        * @param {Function} cb
        */
-      syncUpdates: function (modelName, array, cb) {
+      syncUpdates: function (modelName, array, cb, doUnshift) {
         cb = cb || angular.noop;
+        doUnshift = doUnshift || false;
 
         /**
          * Syncs item creation/updates on 'model:save'
@@ -46,7 +46,12 @@ angular.module('projectsApp')
             array.splice(index, 1, item);
             event = 'updated';
           } else {
-            array.push(item);
+            if (doUnshift) {
+              array.unshift(item);
+            }
+            else {
+              array.push(item);
+            }
           }
 
           cb(event, item, array);
@@ -59,6 +64,12 @@ angular.module('projectsApp')
           var event = 'deleted';
           _.remove(array, {_id: item._id});
           cb(event, item, array);
+        });
+      },
+
+      syncObjUpdates: function (modelName, cb) {
+        socket.on(modelName + ':save', function (item) {
+          cb('updated', item);
         });
       },
 

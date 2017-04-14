@@ -11,8 +11,8 @@ NOTE: the generator is not required for building the application, only for the d
 
 # Prerequisites
 
-  * Node.js (recommened 6.x).
-  * MongoDB (recommened 3.x).
+  * Node.js (recommended 6.x).
+  * MongoDB (recommended 3.x).
   * npm install -g bower grunt-cli
 
 

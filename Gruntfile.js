@@ -132,7 +132,7 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      temp: '.tmp'
     },
 
     // Add vendor prefixed styles
@@ -283,11 +283,29 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      styles: {
+      componentImages2tmp: {
         expand: true,
         cwd: '<%= yeoman.client %>',
-        dest: '.tmp/',
-        src: ['{app,components}/**/*.css']
+        dest: '.tmp',
+        src: ['components/**/*.{png,jpg,jpeg,gif,svg}']
+      },
+      componentImages2dist: {
+        expand: true,
+        cwd: '<%= yeoman.client %>',
+        dest: '<%= yeoman.dist %>/public',
+        src: ['components/**/*.{png,jpg,jpeg,gif,svg}']
+      },
+      tmp: {
+        expand: true,
+        cwd: '.tmp',
+        dest: '<%= yeoman.dist %>/public',
+        src: ['{app,components}/**/*']
+      },
+      bowerComponents2dist: {
+        expand: true,
+        cwd: '<%= yeoman.client %>',
+        src: ['bower_components/**/*'],
+        dest: '<%= yeoman.dist %>/public'
       }
     },
 
@@ -315,12 +333,7 @@ module.exports = function (grunt) {
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
-      server: [
-        'babel',
-        'jade',
-        'less'
-      ],
-      dist: [
+      compile: [
         'babel',
         'jade',
         'less'
@@ -365,7 +378,7 @@ module.exports = function (grunt) {
         sourceMap: true,
         presets: ['es2015']
       },
-      server: {
+      client: {
         files: [{
           expand: true,
           cwd: 'client',
@@ -387,7 +400,7 @@ module.exports = function (grunt) {
           '<%= yeoman.client %>/components'
         ]
       },
-      server: {
+      client: {
         files: {
           '.tmp/app/app.css' : '<%= yeoman.client %>/app/app.less'
         }
@@ -492,32 +505,16 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('serve', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'express-keepalive']);
-    }
-
-    if (target === 'debug') {
-      return grunt.task.run([
-        'clean:server',
-        'env:all',
-        'injector:less',
-        'concurrent:server',
-        'injector',
-        'wiredep',
-        'autoprefixer',
-        'concurrent:debug'
-      ]);
-    }
-
     grunt.task.run([
-      'clean:server',
+      'clean:temp',
       'env:all',
       'injector:less',
-      'concurrent:server',
+      'concurrent:compile',
       'injector',
       'wiredep',
       'autoprefixer',
       'express:dev',
+      'copy:componentImages2tmp',
       'wait',
       'watch'
     ]);
@@ -531,7 +528,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'gitinfo',
     'injector:less',
-    'concurrent:dist',
+    'concurrent:compile',
     'injector',
     'wiredep',
     'useminPrepare',
@@ -540,10 +537,26 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
+    'copy:componentImages2dist',
     'cssmin',
     'uglify',
     'rev',
     'usemin',
+    'replace'
+  ]);
+
+  grunt.registerTask('build-debug', [
+    'clean:dist',
+    'gitinfo',
+    'injector:less',
+    'concurrent:compile',
+    'injector',
+    'wiredep',
+    'autoprefixer',
+    'copy:dist',
+    'copy:tmp',
+    'copy:bowerComponents2dist',
+    'copy:componentImages2dist',
     'replace'
   ]);
 

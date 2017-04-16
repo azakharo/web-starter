@@ -6,7 +6,7 @@ angular.module('projectsApp')
 
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
-      socket.syncUpdates('thing', $scope.awesomeThings);
+      socket.syncArray('thing', $scope.awesomeThings);
     });
 
     $scope.addThing = function() {
@@ -22,7 +22,7 @@ angular.module('projectsApp')
     };
 
     $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('thing');
+      socket.unsync('thing');
     });
 
     $scope.appVer = APP_VERSION;

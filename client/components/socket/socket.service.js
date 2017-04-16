@@ -26,8 +26,9 @@ angular.module('projectsApp')
        * @param {String} modelName
        * @param {Array} array
        * @param {Function} cb
+       * @param {Boolean} doUnshift - whether to insert the new item to the beginning of the array
        */
-      syncUpdates: function (modelName, array, cb, doUnshift) {
+      syncArray: function (modelName, array, cb, doUnshift) {
         cb = cb || angular.noop;
         doUnshift = doUnshift || false;
 
@@ -67,7 +68,7 @@ angular.module('projectsApp')
         });
       },
 
-      syncObjUpdates: function (modelName, cb) {
+      syncObject: function (modelName, cb) {
         socket.on(modelName + ':save', function (item) {
           cb('updated', item);
         });
@@ -78,7 +79,7 @@ angular.module('projectsApp')
        *
        * @param modelName
        */
-      unsyncUpdates: function (modelName) {
+      unsync: function (modelName) {
         socket.removeAllListeners(modelName + ':save');
         socket.removeAllListeners(modelName + ':remove');
       }

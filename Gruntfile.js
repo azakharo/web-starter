@@ -483,6 +483,15 @@ module.exports = function (grunt) {
             from: 'APP_VERSION="unknown"',
             to: 'APP_VERSION="<%= gitinfo.local.branch.current.SHA %>"'
           }]
+      },
+      serveClient: {
+        src: ['dist/server/app.js'],
+        overwrite: true,
+        replacements: [
+          {
+            from: "serveClient: config.env !== 'production',",
+            to: 'serveClient: true,'
+          }]
       }
     }
 
@@ -542,7 +551,7 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin',
-    'replace'
+    'replace:appVer'
   ]);
 
   grunt.registerTask('build-debug', [
@@ -557,7 +566,8 @@ module.exports = function (grunt) {
     'copy:tmp',
     'copy:bowerComponents2dist',
     'copy:componentImages2dist',
-    'replace'
+    'replace:appVer',
+    'replace:serveClient'
   ]);
 
   grunt.registerTask('default', [

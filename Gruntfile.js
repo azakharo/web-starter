@@ -44,6 +44,13 @@ module.exports = function (grunt) {
           debug: false
         }
       },
+      debugServer: {
+        options: {
+          script: 'server/app.js',
+          debug: false,
+          opts: ['--inspect', '--debug-brk']
+        }
+      },
       prod: {
         options: {
           script: 'dist/server/app.js'
@@ -513,7 +520,7 @@ module.exports = function (grunt) {
     this.async();
   });
 
-  grunt.registerTask('serve', function (target) {
+  grunt.registerTask('prepare-dev', function (target) {
     grunt.task.run([
       'clean:temp',
       'env:all',
@@ -522,8 +529,23 @@ module.exports = function (grunt) {
       'injector',
       'wiredep',
       'autoprefixer',
+      'copy:componentImages2tmp'
+    ]);
+  });
+
+  grunt.registerTask('serve', function (target) {
+    grunt.task.run([
+      'prepare-dev',
       'express:dev',
-      'copy:componentImages2tmp',
+      'wait',
+      'watch'
+    ]);
+  });
+
+  grunt.registerTask('debugServer', function (target) {
+    grunt.task.run([
+      'prepare-dev',
+      'express:debugServer',
       'wait',
       'watch'
     ]);

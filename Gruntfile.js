@@ -16,7 +16,8 @@ module.exports = function (grunt) {
     ngtemplates: 'grunt-angular-templates',
     buildcontrol: 'grunt-build-control',
     gitinfo: 'grunt-gitinfo',
-    replace: 'grunt-text-replace'
+    replace: 'grunt-text-replace',
+    jshint: 'grunt-contrib-jshint'
   });
 
   // Time how long tasks take. Can help when optimizing build times
@@ -500,6 +501,24 @@ module.exports = function (grunt) {
             to: 'serveClient: true,'
           }]
       }
+    },
+
+    jshint: {
+      options: {
+        jshintrc: '<%= yeoman.client %>/.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      server: {
+        options: {
+          jshintrc: 'server/.jshintrc'
+        },
+        src: [
+          'server/**/*.js'
+        ]
+      },
+      client: [
+        '<%= yeoman.client %>/{app,components}/**/*.js'
+      ]
     }
 
   });

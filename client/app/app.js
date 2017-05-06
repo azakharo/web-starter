@@ -1,6 +1,6 @@
 'use strict';
 
-var APP_VERSION = "unknown";
+var APP_VERSION = 'unknown'; // jshint ignore:line
 
 angular.module('projectsApp', [
   'ngCookies',
@@ -25,7 +25,7 @@ angular.module('projectsApp', [
         } else {
           object = JSON.parse(data);
         }
-        return deserializeDates(object);
+        return deserializeDates(object); // jshint ignore:line
       } catch(e) {
         return data;
       }

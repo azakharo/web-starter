@@ -15,10 +15,11 @@ angular.module('projectsApp')
             password: $scope.user.password
           },
           function (err, user) {
+            /* jshint unused:false */
             if (err) {
               if (typeof err === 'string') {
-                form['email'].$setValidity('mongoose', false);
-                $scope.errors['email'] = err;
+                form.email.$setValidity('mongoose', false);
+                $scope.errors.email = err;
               }
               else {
                 err = err.data;

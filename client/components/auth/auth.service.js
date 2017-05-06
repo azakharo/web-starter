@@ -8,6 +8,16 @@ angular.module('projectsApp')
     }
 
     /**
+     * Delete access token and user info
+     *
+     * @param  {Function}
+     */
+    function logout() {
+      $cookieStore.remove('token');
+      currentUser = {};
+    }
+
+    /**
      * Authenticate user and save token
      *
      * @param  {Object}   user     - login info
@@ -39,16 +49,6 @@ angular.module('projectsApp')
       });
 
       return deferred.promise;
-    }
-
-    /**
-     * Delete access token and user info
-     *
-     * @param  {Function}
-     */
-    function logout() {
-      $cookieStore.remove('token');
-      currentUser = {};
     }
 
     /**
@@ -129,9 +129,11 @@ angular.module('projectsApp')
     /**
      * Get auth token
      */
+    /* jshint ignore:start */
     function getToken() {
       return $cookieStore.get('token');
     }
+    /* jshint ignore:end */
 
     return {
       login:            login,
@@ -142,5 +144,5 @@ angular.module('projectsApp')
       isLoggedIn:       isLoggedIn,
       isLoggedInAsync:  isLoggedInAsync,
       isAdmin:          isAdmin
-    }
+    };
   });

@@ -25,5 +25,5 @@ angular.module('projectsApp')
       socket.unsync('thing');
     });
 
-    $scope.appVer = APP_VERSION;
+    $scope.appVer = APP_VERSION; // jshint ignore:line
   });

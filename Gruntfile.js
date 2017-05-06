@@ -539,9 +539,17 @@ module.exports = function (grunt) {
     this.async();
   });
 
-  grunt.registerTask('prepare-dev', function (target) {
+  grunt.registerTask('lint-js', function () {
+    grunt.task.run([
+      'jshint:client',
+      'jshint:server'
+    ]);
+  });
+
+  grunt.registerTask('prepare-dev', function () {
     grunt.task.run([
       'clean:temp',
+      'lint-js',
       'env:all',
       'injector:less',
       'concurrent:compile',

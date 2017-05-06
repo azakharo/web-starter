@@ -1,5 +1,7 @@
 'use strict';
 
+/* jshint unused:false */
+/* jshint latedef:false */
 
 function getDays(dateStart, dateEnd) {
   return _getTimeUnits(dateStart, dateEnd, 'days');

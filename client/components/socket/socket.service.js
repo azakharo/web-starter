@@ -4,7 +4,7 @@ angular.module('projectsApp')
   .factory('socket', function(socketFactory) {
 
     // socket.io now auto-configures its connection when we ommit a connection url
-    var ioSocket = io('', {
+    var ioSocket = io('', { // jshint ignore:line
       // Send auth token on connection, you will need to DI the Auth service above
       // 'query': 'token=' + Auth.getToken()
       path: '/socket.io-client/dist'
@@ -39,7 +39,7 @@ angular.module('projectsApp')
           var oldItem = _.find(array, {_id: item._id});
           var index = array.indexOf(oldItem);
           var event = 'created';
-          item = deserializeDates(item);
+          item = deserializeDates(item); // jshint ignore:line
 
           // replace oldItem if it exists
           // otherwise just add item to the collection

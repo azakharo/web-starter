@@ -1,5 +1,6 @@
 'use strict';
 
+/* jshint unused:false */
 
 function log(msg) {
   console.log(msg);

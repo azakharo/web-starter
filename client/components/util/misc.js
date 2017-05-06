@@ -1,5 +1,6 @@
 'use strict';
 
+/* jshint unused:false */
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
@@ -11,12 +12,16 @@ function debounce(func, wait, immediate) {
     var context = this, args = arguments;
     var later = function() {
       timeout = null;
-      if (!immediate) func.apply(context, args);
+      if (!immediate) {
+        func.apply(context, args);
+      }
     };
     var callNow = immediate && !timeout;
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
+    if (callNow) {
+      func.apply(context, args);
+    }
   };
 }
 
@@ -27,11 +32,11 @@ function getBrowserInfo(){
     return {name:'IE ',version:(tem[1]||'')};
   }
   if(M[1]==='Chrome'){
-    tem=ua.match(/\bOPR\/(\d+)/)
-    if(tem!=null)   {return {name:'Opera', version:tem[1]};}
+    tem=ua.match(/\bOPR\/(\d+)/);
+    if(tem !== null)   {return {name:'Opera', version:tem[1]};}
   }
   M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
-  if((tem=ua.match(/version\/(\d+)/i))!=null) {M.splice(1,1,tem[1]);}
+  if((tem=ua.match(/version\/(\d+)/i)) !== null) {M.splice(1,1,tem[1]);}
   return {
     name: M[0],
     version: M[1]
@@ -44,7 +49,7 @@ function getBrowserInfo(){
 var dateRegex = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d(\.\d+)?([+-][0-2]\d(:?[0-5]\d)?|Z)$/;
 function deserializeDates(object) {
   var result = object;
-  if (object != null) {
+  if (object !== null) {
     result = angular.copy(object);
     for (var key in result) {
       var property = result[key];

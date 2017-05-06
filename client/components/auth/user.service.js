@@ -12,7 +12,7 @@ angular.module('projectsApp')
         $http.get(`${BASE_PATH}/me`).then(
           resp => deffered.resolve(resp.data),
           function (resp) {
-            log(resp.data);
+            log(resp.data); // jshint ignore:line
             deffered.resolve(null);
           }
         );
@@ -26,7 +26,7 @@ angular.module('projectsApp')
         $http.get(`${BASE_PATH}/`).then(
           resp => deffered.resolve(resp.data),
           function (resp) {
-            log(resp.data);
+            log(resp.data); // jshint ignore:line
             deffered.resolve(null);
           }
         );
@@ -38,16 +38,16 @@ angular.module('projectsApp')
         const deffered = $q.defer();
 
         $http({
-          method: "put",
+          method: 'put',
           url: `${BASE_PATH}/${userID}/password`,
           data: {
             oldPassword: oldPass,
             newPassword: newPass
           }
         }).then(
-          resp => deffered.resolve(),
+          () => deffered.resolve(),
           function (resp) {
-            log(resp.data);
+            log(resp.data); // jshint ignore:line
             deffered.reject();
           }
         );
@@ -59,13 +59,13 @@ angular.module('projectsApp')
         const deffered = $q.defer();
 
         $http({
-          method: "post",
+          method: 'post',
           url: `${BASE_PATH}/`,
           data: data
         }).then(
           resp => deffered.resolve(resp.data), // return token
           function (resp) {
-            log(resp.data);
+            log(resp.data); // jshint ignore:line
             deffered.reject(resp.data);
           }
         );
@@ -77,12 +77,12 @@ angular.module('projectsApp')
         const deffered = $q.defer();
 
         $http({
-          method: "delete",
+          method: 'delete',
           url: `${BASE_PATH}/${userID}`
         }).then(
-          resp => deffered.resolve(),
+          () => deffered.resolve(),
           function (resp) {
-            log(resp.data);
+            log(resp.data); // jshint ignore:line
             deffered.reject();
           }
         );

@@ -6,7 +6,6 @@ RUN npm install -g bower grunt-cli
 
 WORKDIR /usr/local/webstarter
 
-COPY ./npm-shrinkwrap.json /usr/local/webstarter/npm-shrinkwrap.json
 COPY ./package.json /usr/local/webstarter/package.json
 RUN npm install
 

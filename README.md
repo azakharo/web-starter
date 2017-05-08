@@ -45,10 +45,7 @@ NOTE: the generator is not required for building the application, only for the d
 # Run built production version in Docker container
 
   1. build the application as shown above
-  2. run: docker build -f Dockerfile-prod -t webstarter .
-  3. run: docker run -d -p 8080:8080 --name starter webstarter
-  4. Now you can open your browser at Your_VM_IP:8080 and see the application's main page
-
-# Run development version in Docker container
-
-  1. run: docker-compose -f docker-compose-dev.yml up
+  2. cd dist
+  3. run: docker build -t webstarter .
+  4. run: docker run -d -p 8080:8080 --name starter webstarter
+  5. Now you can open your browser at Your_VM_IP:8080 and see the application's main page

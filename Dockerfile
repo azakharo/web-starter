@@ -5,11 +5,11 @@ MAINTAINER Alexey Zakharov <zangular@yandex.ru>
 ENV NODE_ENV=production
 
 WORKDIR /usr/local/webstarter
-COPY ./dist/package.json /usr/local/webstarter/package.json
+COPY ./package.json /usr/local/webstarter/package.json
 RUN npm install --production
 
-COPY ./dist/public /usr/local/webstarter/public
-COPY ./dist/server /usr/local/webstarter/server
+COPY ./public /usr/local/webstarter/public
+COPY ./server /usr/local/webstarter/server
 
 EXPOSE 8088
 

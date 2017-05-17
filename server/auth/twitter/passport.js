@@ -1,3 +1,5 @@
+'use strict';
+
 exports.setup = function (User, config) {
   var passport = require('passport');
   var TwitterStrategy = require('passport-twitter').Strategy;

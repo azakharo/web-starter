@@ -25,13 +25,15 @@ exports.setup = function (User, config) {
             facebook: profile._json
           });
           user.save(function(err) {
-            if (err) return done(err);
+            if (err) {
+              return done(err);
+            }
             done(err, user);
           });
         } else {
           return done(err, user);
         }
-      })
+      });
     }
   ));
 };

@@ -1,13 +1,15 @@
 {
   "node": true,
-  "esnext": true,
+  "esversion": 6,
   "bitwise": true,
+  "curly": true,
   "eqeqeq": true,
   "immed": true,
   "latedef": "nofunc",
   "newcap": true,
   "noarg": true,
   "undef": true,
+  "unused": true,
   "smarttabs": true,
   "asi": true,
   "debug": true

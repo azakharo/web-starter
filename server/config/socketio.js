@@ -4,8 +4,6 @@
 
 'use strict';
 
-var config = require('./environment');
-
 let thing = require('../api/thing/thing.model');
 
 // When the user disconnects.. perform this

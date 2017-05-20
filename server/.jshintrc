@@ -13,5 +13,10 @@
   "strict": true,
   "smarttabs": true,
   "asi": true,
-  "debug": true
+  "debug": true,
+  "globals": {
+    "describe": true,
+    "beforeEach": true,
+    "it": true
+  }
 }

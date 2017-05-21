@@ -50,6 +50,9 @@ module.exports = function(app) {
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', path.join(config.root, 'client'));
-    app.use(morgan('dev'));
+    // Disable the logging for testing
+    if (env === 'development') {
+      app.use(morgan('dev'));
+    }
   }
 };

@@ -7,6 +7,7 @@ let Thing = require('./thing.model');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../app');
+const should = chai.should(); // jshint ignore:line
 
 chai.use(chaiHttp);
 
@@ -18,19 +19,16 @@ describe('Things', () => {
 
   describe('/GET things', () => {
     it('it should GET all the things', () => {
-      chai.request(server)
-        .get('/things')
+      return chai.request(server)
+        .get('/api/things')
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
           res.body.length.should.be.eql(0);
-        })
-        .catch((err) => {
-          throw err;
         });
     });
   });
-  //describe('/POST book', () => {
+  describe('/POST book', () => {
   //  it('it should not POST a book without pages field', (done) => {
   //    let book = {
   //      title: "The Lord of the Rings",
@@ -49,28 +47,20 @@ describe('Things', () => {
   //        done();
   //      });
   //  });
-  //  it('it should POST a book ', (done) => {
-  //    let book = {
-  //      title: "The Lord of the Rings",
-  //      author: "J.R.R. Tolkien",
-  //      year: 1954,
-  //      pages: 1170
-  //    }
-  //    chai.request(server)
-  //      .post('/book')
-  //      .send(book)
-  //      .end((err, res) => {
-  //        res.should.have.status(200);
-  //        res.body.should.be.a('object');
-  //        res.body.should.have.property('message').eql('Book successfully added!');
-  //        res.body.book.should.have.property('title');
-  //        res.body.book.should.have.property('author');
-  //        res.body.book.should.have.property('pages');
-  //        res.body.book.should.have.property('year');
-  //        done();
-  //      });
-  //  });
-  //});
+    it('it should POST a thing', () => {
+      const thing = {
+        name: 'a thing'
+      };
+      return chai.request(server)
+        .post('/api/things')
+        .send(thing)
+        .then((res) => {
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          res.body.should.have.property('name');
+        });
+    });
+  });
   //describe('/GET/:id book', () => {
   //  it('it should GET a book by the given id', (done) => {
   //    let book = new Thing({ title: "The Lord of the Rings", author: "J.R.R. Tolkien", year: 1954, pages: 1170 });

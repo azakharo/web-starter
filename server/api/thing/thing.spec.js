@@ -9,7 +9,7 @@ let chaiHttp = require('chai-http');
 let server = require('../../app');
 
 // Init
-const should = chai.should(); // jshint ignore:line
+chai.should();
 chai.use(chaiHttp);
 
 describe('Things', () => {

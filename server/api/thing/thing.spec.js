@@ -7,8 +7,9 @@ let Thing = require('./thing.model');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../app');
-const should = chai.should(); // jshint ignore:line
 
+// Init
+const should = chai.should(); // jshint ignore:line
 chai.use(chaiHttp);
 
 describe('Things', () => {

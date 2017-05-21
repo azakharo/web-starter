@@ -31,6 +31,9 @@ exports.show = function(req, res) {
 
 // Creates a new thing in the DB.
 exports.create = function(req, res) {
+  if (!req.body.name) {
+    return res.status(400).send('name is missing');
+  }
   Thing.create(req.body, function(err, thing) {
     if(err) { return handleError(res, err); }
     return res.status(201).json(thing);

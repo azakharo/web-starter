@@ -14,7 +14,13 @@ module.exports = function(app) {
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth'));
-  
+
+  app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+      res.sendStatus(401);
+    }
+  });
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);

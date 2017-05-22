@@ -61,11 +61,12 @@ exports.destroy = function(req, res) {
     if(!thing) { return res.status(404).send('Not Found'); }
     thing.remove(function(err) {
       if(err) { return handleError(res, err); }
-      return res.status(204).send('No Content');
+      return res.status(200).send('OK');
     });
   });
 };
 
 function handleError(res, err) {
+  console.log(err.message);
   return res.status(500).send(err);
 }

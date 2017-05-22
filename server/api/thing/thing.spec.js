@@ -56,62 +56,52 @@ describe('Things', () => {
         });
     });
   });
-  //describe('/GET/:id book', () => {
-  //  it('it should GET a book by the given id', (done) => {
-  //    let book = new Thing({ title: "The Lord of the Rings", author: "J.R.R. Tolkien", year: 1954, pages: 1170 });
-  //    book.save((err, book) => {
-  //      chai.request(server)
-  //        .get('/book/' + book.id)
-  //        .send(book)
-  //        .end((err, res) => {
-  //          res.should.have.status(200);
-  //          res.body.should.be.a('object');
-  //          res.body.should.have.property('title');
-  //          res.body.should.have.property('author');
-  //          res.body.should.have.property('pages');
-  //          res.body.should.have.property('year');
-  //          res.body.should.have.property('_id').eql(book.id);
-  //          done();
-  //        });
-  //    });
-  //
-  //  });
-  //});
-  //describe('/PUT/:id book', () => {
-  //  it('it should UPDATE a book given the id', (done) => {
-  //    let book = new Thing({title: "The Chronicles of Narnia", author: "C.S. Lewis", year: 1948, pages: 778})
-  //    book.save((err, book) => {
-  //      chai.request(server)
-  //        .put('/book/' + book.id)
-  //        .send({title: "The Chronicles of Narnia", author: "C.S. Lewis", year: 1950, pages: 778})
-  //        .end((err, res) => {
-  //          res.should.have.status(200);
-  //          res.body.should.be.a('object');
-  //          res.body.should.have.property('message').eql('Book updated!');
-  //          res.body.book.should.have.property('year').eql(1950);
-  //          done();
-  //        });
-  //    });
-  //  });
-  //});
-  ///*
-  // * Test the /DELETE/:id route
-  // */
-  //describe('/DELETE/:id book', () => {
-  //  it('it should DELETE a book given the id', (done) => {
-  //    let book = new Thing({title: "The Chronicles of Narnia", author: "C.S. Lewis", year: 1948, pages: 778})
-  //    book.save((err, book) => {
-  //      chai.request(server)
-  //        .delete('/book/' + book.id)
-  //        .end((err, res) => {
-  //          res.should.have.status(200);
-  //          res.body.should.be.a('object');
-  //          res.body.should.have.property('message').eql('Book successfully deleted!');
-  //          res.body.result.should.have.property('ok').eql(1);
-  //          res.body.result.should.have.property('n').eql(1);
-  //          done();
-  //        });
-  //    });
-  //  });
-  //});
+  describe('/GET/:id thing', () => {
+    it('it should GET a thing by the given id', () => {
+      const thing = new Thing({name: 'a new thing'});
+      return thing.save()
+        .then(savedThing => {
+          return chai.request(server)
+            .get('/api/things/' + savedThing._id)
+            .then(res => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('name');
+              res.body.name.should.equal('a new thing');
+            });
+        });
+    });
+  });
+  describe('/PUT/:id thing', () => {
+    it('it should UPDATE a thing given the id', () => {
+      const thing = new Thing({name: 'a new thing'});
+      return thing.save()
+        .then(thingCreated => {
+          return chai.request(server)
+            .put('/api/things/' + thingCreated._id)
+            .send({name: 'modified thing'})
+            .then(res => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('name').equal('modified thing');
+            });
+      });
+    });
+  });
+  describe('/DELETE/:id thing', () => {
+    it('it should DELETE a thing given the id', () => {
+      const thing = new Thing({name: 'a new thing'});
+      return thing.save()
+        .then(newThing => {
+          return chai.request(server)
+            .delete('/api/things/' + newThing._id)
+            .then(res => {
+              res.should.have.status(200);
+              res.should.have.property('text');
+              res.text.should.be.a('string');
+              res.text.should.equal('OK');
+            });
+        });
+    });
+  });
 });

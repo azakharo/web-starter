@@ -582,13 +582,20 @@ module.exports = function (grunt) {
     grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
   });
 
+  grunt.registerTask('common-build', function () {
+    grunt.task.run([
+      'clean:dist',
+      'lint-js',
+      'gitinfo',
+      'injector:less',
+      'concurrent:compile',
+      'injector',
+      'wiredep'
+    ]);
+  });
+
   grunt.registerTask('build', [
-    'clean:dist',
-    'gitinfo',
-    'injector:less',
-    'concurrent:compile',
-    'injector',
-    'wiredep',
+    'common-build',
     'useminPrepare',
     'autoprefixer',
     'ngtemplates',
@@ -604,12 +611,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build-debug', [
-    'clean:dist',
-    'gitinfo',
-    'injector:less',
-    'concurrent:compile',
-    'injector',
-    'wiredep',
+    'common-build',
     'autoprefixer',
     'copy:dist',
     'copy:tmp',

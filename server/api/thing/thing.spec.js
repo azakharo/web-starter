@@ -1,7 +1,5 @@
 'use strict';
 
-process.env.NODE_ENV = 'test';
-
 let Thing = require('./thing.model');
 
 let chai = require('chai');
@@ -13,6 +11,23 @@ chai.should();
 chai.use(chaiHttp);
 
 describe('Things', () => {
+
+  let authToken = null;
+
+  before(() => {
+    return chai.request(server)
+      .post('/auth/local')
+      .send({
+        email: 'test@test.com',
+        password: 'test'
+      })
+      .then((res) => {
+        res.should.have.status(200);
+        res.body.should.be.an('object');
+        res.body.should.have.property('token');
+        authToken = res.body.token;
+      });
+  });
 
   beforeEach(() => {
     return Thing.remove({});
@@ -33,6 +48,7 @@ describe('Things', () => {
     it('it should not POST a thing without name field', () => {
       return chai.request(server)
         .post('/api/things')
+        .set('Authorization', `Bearer ${authToken}`)
         .send({})
         .catch((err) => {
           err.should.have.status(400);
@@ -48,10 +64,11 @@ describe('Things', () => {
       };
       return chai.request(server)
         .post('/api/things')
+        .set('Authorization', `Bearer ${authToken}`)
         .send(thing)
         .then((res) => {
           res.should.have.status(201);
-          res.body.should.be.a('object');
+          res.body.should.be.an('object');
           res.body.should.have.property('name');
         });
     });
@@ -79,6 +96,7 @@ describe('Things', () => {
         .then(thingCreated => {
           return chai.request(server)
             .put('/api/things/' + thingCreated._id)
+            .set('Authorization', `Bearer ${authToken}`)
             .send({name: 'modified thing'})
             .then(res => {
               res.should.have.status(200);
@@ -95,6 +113,7 @@ describe('Things', () => {
         .then(newThing => {
           return chai.request(server)
             .delete('/api/things/' + newThing._id)
+            .set('Authorization', `Bearer ${authToken}`)
             .then(res => {
               res.should.have.status(200);
               res.should.have.property('text');

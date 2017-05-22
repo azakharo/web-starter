@@ -15,9 +15,12 @@ module.exports = function(app) {
 
   app.use('/auth', require('./auth'));
 
-  app.use(function (err, req, res) {
+  app.use(function (err, req, res, next) {
     if (err.name === 'UnauthorizedError') {
       res.sendStatus(401);
+    }
+    else {
+      next();
     }
   });
 

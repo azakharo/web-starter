@@ -1,10 +1,12 @@
 'use strict';
 
-let Thing = require('./thing.model');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../app');
+
+const Thing = require('./thing.model');
+const User = require('../user/user.model');
 
 // Init
 chai.should();
@@ -15,17 +17,25 @@ describe('Things', () => {
   let authToken = null;
 
   before(() => {
-    return chai.request(server)
-      .post('/auth/local')
-      .send({
-        email: 'test@test.com',
-        password: 'test'
-      })
-      .then((res) => {
-        res.should.have.status(200);
-        res.body.should.be.an('object');
-        res.body.should.have.property('token');
-        authToken = res.body.token;
+    return User.create({
+      provider: 'local',
+      name: 'Test User',
+      email: 'test@test.com',
+      password: 'test'
+    })
+    .then(() => {
+        return chai.request(server)
+          .post('/auth/local')
+          .send({
+            email: 'test@test.com',
+            password: 'test'
+          })
+          .then((res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+            res.body.should.have.property('token');
+            authToken = res.body.token;
+          });
       });
   });
 

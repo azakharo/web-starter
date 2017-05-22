@@ -519,6 +519,19 @@ module.exports = function (grunt) {
       client: [
         '<%= yeoman.client %>/{app,components}/**/*.js'
       ]
+    },
+
+    shell: {
+      mocha: {
+        command: 'mocha -- server/**/*.spec.js',
+        options: {
+          execOptions: {
+            env: {
+              'NODE_ENV': 'test'
+            }
+          }
+        }
+      }
     }
 
   });
@@ -584,8 +597,9 @@ module.exports = function (grunt) {
 
   grunt.registerTask('common-build', function () {
     grunt.task.run([
-      'clean:dist',
       'lint-js',
+      'shell:mocha',
+      'clean:dist',
       'gitinfo',
       'injector:less',
       'concurrent:compile',

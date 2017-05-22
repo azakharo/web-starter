@@ -53,6 +53,7 @@
     "grunt-injector": "1.1.0",
     "grunt-ng-annotate": "3.0.0",
     "grunt-rev": "0.1.0",
+    "grunt-shell": "2.1.0",
     "grunt-text-replace": "0.4.0",
     "grunt-usemin": "3.1.1",
     "grunt-wiredep": "3.0.1",

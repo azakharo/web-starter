@@ -67,12 +67,6 @@ module.exports = function (grunt) {
           '!<%= yeoman.client %>/app/app.js'],
         tasks: ['injector:scripts']
       },
-      injectCss: {
-        files: [
-          '<%= yeoman.client %>/{app,components}/**/*.css'
-        ],
-        tasks: ['injector:css']
-      },
       injectLess: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.less'],
@@ -279,11 +273,17 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      client2dist: {
+      clientJs2dist: {
+        expand: true,
+        cwd: '<%= yeoman.client %>',
+        dest: '<%= yeoman.dist %>/public',
+        src: ['{app,components}/**/*.js']
+      },
+      tmp2dist: {
         expand: true,
         cwd: '.tmp',
         dest: '<%= yeoman.dist %>/public',
-        src: ['{app,components}/**/*']
+        src: ['**/*']
       },
       bowerComponents2dist: {
         expand: true,
@@ -412,25 +412,8 @@ module.exports = function (grunt) {
             '!<%= yeoman.client %>/app/app.less'
           ]
         }
-      },
-
-      // Inject component css into index.html
-      css: {
-        options: {
-          transform: function(filePath) {
-            filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
-            return '<link rel="stylesheet" href="' + filePath + '">';
-          },
-          starttag: '<!-- injector:css -->',
-          endtag: '<!-- endinjector -->'
-        },
-        files: {
-          '<%= yeoman.client %>/index.html': [
-            '<%= yeoman.client %>/{app,components}/**/*.css'
-          ]
-        }
       }
+
     },
 
     replace: {
@@ -513,7 +496,7 @@ module.exports = function (grunt) {
       'env:all',
       'injector:less',
       'concurrent:compile',
-      'injector',
+      'injector:scripts',
       'wiredep',
       'autoprefixer'
     ]);
@@ -549,7 +532,7 @@ module.exports = function (grunt) {
       'gitinfo',
       'injector:less',
       'concurrent:compile',
-      'injector',
+      'injector:scripts',
       'wiredep'
     ]);
   });
@@ -573,7 +556,8 @@ module.exports = function (grunt) {
     'common-build',
     'autoprefixer',
     'copy:dist',
-    'copy:client2dist',
+    'copy:clientJs2dist',
+    'copy:tmp2dist',
     'copy:bowerComponents2dist',
     'replace:appVer',
     'replace:serveClient'

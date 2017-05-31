@@ -1,7 +1,7 @@
-// Generated on 2016-10-20 using generator-angular-fullstack 2.1.1
 'use strict';
 
 module.exports = function (grunt) {
+
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
@@ -89,13 +89,6 @@ module.exports = function (grunt) {
           '<%= yeoman.client %>/{app,components}/**/*.jade'],
         tasks: ['jade']
       },
-      babel: {
-        files: [
-          '<%= yeoman.client %>/{app,components}/**/*.js',
-          '!<%= yeoman.client %>/{app,components}/**/*.spec.js'
-        ],
-        tasks: ['babel']
-      },
       gruntfile: {
         files: ['Gruntfile.js']
       },
@@ -104,10 +97,10 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
 
-          '.tmp/{app,components}/**/*.js',
+          '<%= yeoman.client %>/{app,components}/**/*.js',
 
-          '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
-          '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js',
+          '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
+          '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
           '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
         ],
         options: {
@@ -121,7 +114,7 @@ module.exports = function (grunt) {
         tasks: ['express:dev', 'wait'],
         options: {
           livereload: true,
-          nospawn: true //Without this option specified express won't be reloaded
+          nospawn: true // without this option specified express won't be reloaded
         }
       }
     },
@@ -247,11 +240,6 @@ module.exports = function (grunt) {
         },
         usemin: 'app/app.js'
       },
-      main: {
-        cwd: '<%= yeoman.client %>',
-        src: ['{app,components}/**/*.html'],
-        dest: '.tmp/templates.js'
-      },
       tmp: {
         cwd: '.tmp',
         src: ['{app,components}/**/*.html'],
@@ -271,9 +259,9 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             'bower_components/font-awesome/fonts/*',
-            'assets/images/{,*/}*.{webp}',
             'assets/fonts/**/*',
             'assets/images/*',
+            'components/**/*.{png,jpg,jpeg,gif,svg}',
             'index.html'
           ]
         }, {
@@ -291,19 +279,7 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      componentImages2tmp: {
-        expand: true,
-        cwd: '<%= yeoman.client %>',
-        dest: '.tmp',
-        src: ['components/**/*.{png,jpg,jpeg,gif,svg}']
-      },
-      componentImages2dist: {
-        expand: true,
-        cwd: '<%= yeoman.client %>',
-        dest: '<%= yeoman.dist %>/public',
-        src: ['components/**/*.{png,jpg,jpeg,gif,svg}']
-      },
-      tmp: {
+      client2dist: {
         expand: true,
         cwd: '.tmp',
         dest: '<%= yeoman.dist %>/public',
@@ -342,7 +318,6 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       compile: [
-        'babel',
         'jade',
         'less'
         //'imagemin',
@@ -380,25 +355,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Compiles ES6 to JavaScript using Babel
-    babel: {
-      options: {
-        sourceMap: true,
-        presets: ['es2015']
-      },
-      client: {
-        files: [{
-          expand: true,
-          cwd: 'client',
-          src: [
-            '{app,components}/**/*.js',
-            '!{app,components}/**/*.spec.js'
-          ],
-          dest: '.tmp'
-        }]
-      }
-    },
-
     // Compiles Less to CSS
     less: {
       options: {
@@ -416,15 +372,13 @@ module.exports = function (grunt) {
     },
 
     injector: {
-      options: {
+      options: {},
 
-      },
       // Inject application script files into index.html (doesn't include bower)
       scripts: {
         options: {
-          transform: function(filePath) {
+          transform: function (filePath) {
             filePath = filePath.replace('/client/', '');
-            filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
           },
           starttag: '<!-- injector:js -->',
@@ -432,15 +386,12 @@ module.exports = function (grunt) {
         },
         files: {
           '<%= yeoman.client %>/index.html': [
-               [
+            '<%= yeoman.client %>/{app,components}/**/*.js',
 
-                 '.tmp/{app,components}/**/*.js',
-
-                 '!{.tmp,<%= yeoman.client %>}/app/app.js',
-                 '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
-                 '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js'
-               ]
-            ]
+            '!<%= yeoman.client %>/app/app.js',
+            '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
+            '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          ]
         }
       },
 
@@ -497,7 +448,7 @@ module.exports = function (grunt) {
         overwrite: true,
         replacements: [
           {
-            from: "serveClient: config.env !== 'production',",
+            from: "serveClient: config.env !== 'production',", // jshint ignore:line
             to: 'serveClient: true,'
           }]
       }
@@ -548,10 +499,6 @@ module.exports = function (grunt) {
     }, 1500);
   });
 
-  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
-    this.async();
-  });
-
   grunt.registerTask('lint-js', function () {
     grunt.task.run([
       'jshint:client',
@@ -568,8 +515,7 @@ module.exports = function (grunt) {
       'concurrent:compile',
       'injector',
       'wiredep',
-      'autoprefixer',
-      'copy:componentImages2tmp'
+      'autoprefixer'
     ]);
   });
 
@@ -616,7 +562,6 @@ module.exports = function (grunt) {
     'concat',
     'ngAnnotate',
     'copy:dist',
-    'copy:componentImages2dist',
     'cssmin',
     'uglify',
     'rev',
@@ -628,9 +573,8 @@ module.exports = function (grunt) {
     'common-build',
     'autoprefixer',
     'copy:dist',
-    'copy:tmp',
+    'copy:client2dist',
     'copy:bowerComponents2dist',
-    'copy:componentImages2dist',
     'replace:appVer',
     'replace:serveClient'
   ]);

@@ -519,7 +519,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('serve', function (target) {
+  grunt.registerTask('serve', function () {
     grunt.task.run([
       'prepare-dev',
       'express:dev',
@@ -528,7 +528,7 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('debugServer', function (target) {
+  grunt.registerTask('debugServer', function () {
     grunt.task.run([
       'prepare-dev',
       'express:debugServer',

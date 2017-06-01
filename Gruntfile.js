@@ -176,7 +176,20 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: ['<%= yeoman.client %>/index.html'],
       options: {
-        dest: '<%= yeoman.dist %>/public'
+        dest: '<%= yeoman.dist %>/public',
+        flow: {
+          steps: {
+            js: [
+              'concat'
+              //'uglify'
+            ],
+            css: [
+              'concat',
+              'cssmin'
+            ]
+          },
+          post: {}
+        }
       }
     },
 
@@ -546,7 +559,7 @@ module.exports = function (grunt) {
     'ngAnnotate',
     'copy:dist',
     'cssmin',
-    'uglify',
+    //'uglify',
     'rev',
     'usemin',
     'replace:appVer'

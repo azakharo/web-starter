@@ -57,7 +57,8 @@
     "jit-grunt": "0.10.0",
     "jshint-stylish": "2.2.1",
     "mocha": "3.4.1",
-    "time-grunt": "1.4.0"
+    "time-grunt": "1.4.0",
+    "uglify-es": "3.0.14"
   },
   "engines": {
     "node": "6.9.4"

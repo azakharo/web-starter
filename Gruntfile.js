@@ -478,6 +478,12 @@ module.exports = function (grunt) {
             }
           }
         }
+      },
+      uglifyAppJs: {
+        command: 'node node_modules/uglify-es/bin/uglifyjs dist/public/app/app.js --compress -o dist/public/app/app.js'
+      },
+      uglifyVendorJs: {
+        command: 'node node_modules/uglify-es/bin/uglifyjs dist/public/app/vendor.js --compress -o dist/public/app/vendor.js'
       }
     }
 
@@ -533,8 +539,15 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('printConfig', function() {
-    grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
+  //grunt.registerTask('printConfig', function() {
+  //  grunt.log.writeln(JSON.stringify(grunt.config(), null, 2));
+  //});
+
+  grunt.registerTask('uglifyJs', function () {
+    grunt.task.run([
+      'shell:uglifyVendorJs',
+      'shell:uglifyAppJs'
+    ]);
   });
 
   grunt.registerTask('common-build', function () {
@@ -560,6 +573,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'cssmin',
     //'uglify',
+    'uglifyJs',
     'rev',
     'usemin',
     'replace:appVer'

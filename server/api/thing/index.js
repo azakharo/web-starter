@@ -1,10 +1,10 @@
 'use strict';
 
-var express = require('express');
-var controller = require('./thing.controller');
-var auth = require('../../auth/auth.service');
+const express = require('express');
+const controller = require('./thing.controller');
+const auth = require('../../auth/auth.service');
 
-var router = express.Router();
+const router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);

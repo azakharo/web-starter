@@ -1,8 +1,8 @@
 'use strict';
 
 exports.setup = function (User, config) {
-  var passport = require('passport');
-  var TwitterStrategy = require('passport-twitter').Strategy;
+  const passport = require('passport');
+  const TwitterStrategy = require('passport-twitter').Strategy;
 
   passport.use(new TwitterStrategy({
     consumerKey: config.twitter.clientID,

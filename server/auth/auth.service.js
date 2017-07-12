@@ -1,11 +1,11 @@
 'use strict';
 
-var config = require('../config/environment');
-var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
-var compose = require('composable-middleware');
-var User = require('../api/user/user.model');
-var validateJwt = expressJwt({ secret: config.secrets.session });
+const config = require('../config/environment');
+const jwt = require('jsonwebtoken');
+const expressJwt = require('express-jwt');
+const compose = require('composable-middleware');
+const User = require('../api/user/user.model');
+const validateJwt = expressJwt({ secret: config.secrets.session });
 
 /**
  * Attaches the user object to the request if authenticated
@@ -71,7 +71,7 @@ function setTokenCookie(req, res) {
   if (!req.user) {
     return res.status(404).json({ message: 'Something went wrong, please try again.'});
   }
-  var token = signToken(req.user._id, req.user.role);
+  const token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
 }

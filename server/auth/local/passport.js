@@ -1,7 +1,7 @@
 'use strict';
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
 exports.setup = function (User) {
   passport.use(new LocalStrategy({

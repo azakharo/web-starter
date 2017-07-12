@@ -1,11 +1,11 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var crypto = require('crypto');
-var authTypes = ['github', 'twitter', 'facebook', 'google'];
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const crypto = require('crypto');
+const authTypes = ['github', 'twitter', 'facebook', 'google'];
 
-var UserSchema = new Schema({
+const UserSchema = new Schema({
   name: String,
   email: {
     type: String,
@@ -73,7 +73,7 @@ UserSchema
     return hashedPassword.length;
   }, 'Password cannot be blank');
 
-var validatePresenceOf = function(value) {
+const validatePresenceOf = function(value) {
   return value && value.length;
 };
 
@@ -130,7 +130,7 @@ UserSchema.methods = {
     if (!password || !this.salt) {
       return '';
     }
-    var salt = new Buffer(this.salt, 'base64');
+    const salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha1').toString('base64');
   }
 };

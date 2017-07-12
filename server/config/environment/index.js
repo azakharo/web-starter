@@ -1,12 +1,12 @@
 'use strict';
 
-var path = require('path');
-var _ = require('lodash');
+const path = require('path');
+const _ = require('lodash');
 
 
 // All configurations will extend these options
 // ============================================
-var all = {
+const all = {
   env: process.env.NODE_ENV,
 
   // Root path of server

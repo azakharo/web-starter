@@ -1,10 +1,10 @@
 'use strict';
 
-var User = require('./user.model');
-var config = require('../../config/environment');
-var jwt = require('jsonwebtoken');
+const User = require('./user.model');
+const config = require('../../config/environment');
+const jwt = require('jsonwebtoken');
 
-var validationError = function(res, err) {
+const validationError = function(res, err) {
   return res.status(422).json(err);
 };
 
@@ -39,14 +39,14 @@ exports.create = function (req, res) {
     }
 
     // Create new user and return token
-    var newUser = new User(req.body);
+    let newUser = new User(req.body);
     newUser.provider = 'local';
     newUser.role = 'user';
     newUser.save(function(err, user) {
       if (err) {
         return validationError(res, err);
       }
-      var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: 60*5*60 });
+      const token = jwt.sign({_id: user._id }, config.secrets.session, { expiresIn: 60*5*60 });
       res.json({ token: token });
     });
   });
@@ -56,7 +56,7 @@ exports.create = function (req, res) {
  * Get a single user
  */
 exports.show = function (req, res, next) {
-  var userId = req.params.id;
+  const userId = req.params.id;
 
   User.findById(userId, function (err, user) {
     if (err) {
@@ -86,9 +86,9 @@ exports.destroy = function(req, res) {
  * Change a users password
  */
 exports.changePassword = function(req, res) {
-  var userId = req.user._id;
-  var oldPass = String(req.body.oldPassword);
-  var newPass = String(req.body.newPassword);
+  const userId = req.user._id;
+  const oldPass = String(req.body.oldPassword);
+  const newPass = String(req.body.newPassword);
 
   User.findById(userId, function (err, user) {
     if(user.authenticate(oldPass)) {
@@ -109,7 +109,7 @@ exports.changePassword = function(req, res) {
  * Get my info
  */
 exports.me = function(req, res, next) {
-  var userId = req.user._id;
+  const userId = req.user._id;
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt

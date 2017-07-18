@@ -50,4 +50,4 @@ nav.navbar.navbar-default(ng-controller='NavbarCtrl')
             span.fa.fa-cog
 
         li(ng-show='isLoggedIn()', ng-class='{active: isActive("/logout")}')
-          a(href='', ng-click='logout()') Logout
+          a.btn-logout(href='', ng-click='logout()') Logout

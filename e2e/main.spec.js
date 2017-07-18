@@ -5,9 +5,10 @@ describe('WebStarter', function() {
   const LOGIN_PATH = 'login';
   const USERNAME = 'admin@admin.com';
   const PASSWORD = 'admin';
+  const INITIAL_ITEM_COUNT = 6;
   const thingList = element.all(by.repeater('thing in awesomeThings'));
 
-  beforeEach(function() {
+  function login() {
     browser.get(`${ROOT_URL}${LOGIN_PATH}`);
 
     const usernameInput = element(by.model('user.email'));
@@ -20,20 +21,36 @@ describe('WebStarter', function() {
     loginBtn.click().then(() => {
       expect(browser.getCurrentUrl()).toEqual(ROOT_URL);
     });
-  });
+  }
 
-  afterEach(function() {
+  function logout() {
     const logoutBtn = element(by.css('.btn-logout'));
 
     logoutBtn.click().then(() => {
       expect(browser.getCurrentUrl()).toEqual(`${ROOT_URL}${LOGIN_PATH}`);
     });
-  });
-
+  }
 
   it('should have initial items', function() {
     browser.get(ROOT_URL);
-    expect(thingList.count()).toEqual(6);
+    expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
+  });
+
+  it('should add a new item', function() {
+    login();
+
+    expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
+
+    const itemInput = element(by.model('newThing'));
+    const newItem = '123';
+    const addNewBtn = element(by.css('.btn-add-new'));
+
+    itemInput.sendKeys(newItem);
+    addNewBtn.click().then(() => {
+      expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
+    });
+
+    logout();
   });
 
 });

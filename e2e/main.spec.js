@@ -41,22 +41,24 @@ describe('WebStarter', function() {
     addNewBtn.click();
   }
 
-  function removeItem(item) {
-    itemLinks.filter(function(elem) {
+  function getItemLink(item) {
+    return itemLinks.filter(function(elem) {
       return elem.getText().then((text) => {
         return text.includes(item);
       });
     }).then((foundLinks) => {
-      expect(foundLinks.length).toEqual(1);
+      return foundLinks.length === 1 ? foundLinks[0] : null;
+    });
+  }
 
-      // Found the item's link
-      const itemLink = foundLinks[0];
+  function removeItem(item) {
+    getItemLink(item).then((itemLink) => {
+      expect(itemLink).not.toBe(null);
 
       // Get the item's close button
       const itemCloseBtn = itemLink.element(by.css('button.close'));
       itemCloseBtn.click();
     });
-
   }
 
   it('should have initial items', function() {
@@ -68,8 +70,10 @@ describe('WebStarter', function() {
     login();
 
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
+    expect(getItemLink(NEW_ITEM)).toBe(null);
     addItem(NEW_ITEM);
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
+    expect(getItemLink(NEW_ITEM)).not.toBe(null);
 
     logout();
   });
@@ -78,8 +82,10 @@ describe('WebStarter', function() {
     login();
 
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
+    expect(getItemLink(NEW_ITEM)).not.toBe(null);
     removeItem(NEW_ITEM);
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
+    expect(getItemLink(NEW_ITEM)).toBe(null);
 
     logout();
   });

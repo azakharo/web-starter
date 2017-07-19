@@ -5,9 +5,10 @@ describe('WebStarter', function() {
   const LOGIN_PATH = 'login';
   const USERNAME = 'admin@admin.com';
   const PASSWORD = 'admin';
-  const INITIAL_ITEM_COUNT = 6;
   const thingList = element.all(by.repeater('thing in awesomeThings'));
+  const INITIAL_ITEM_COUNT = 6;
   const itemLinks = element.all(by.css('.item-link'));
+  const NEW_ITEM = '1234';
 
   function login() {
     browser.get(`${ROOT_URL}${LOGIN_PATH}`);
@@ -67,11 +68,17 @@ describe('WebStarter', function() {
     login();
 
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
-
-    addItem('123');
+    addItem(NEW_ITEM);
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
-    removeItem('123');
 
+    logout();
+  });
+
+  it('should rem added item', function() {
+    login();
+
+    expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
+    removeItem(NEW_ITEM);
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
 
     logout();

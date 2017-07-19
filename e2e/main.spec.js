@@ -7,6 +7,7 @@ describe('WebStarter', function() {
   const PASSWORD = 'admin';
   const INITIAL_ITEM_COUNT = 6;
   const thingList = element.all(by.repeater('thing in awesomeThings'));
+  const itemLinks = element.all(by.css('.item-link'));
 
   function login() {
     browser.get(`${ROOT_URL}${LOGIN_PATH}`);
@@ -31,6 +32,32 @@ describe('WebStarter', function() {
     });
   }
 
+  function addItem(item) {
+    const itemInput = element(by.model('newThing'));
+    const addNewBtn = element(by.css('.btn-add-new'));
+
+    itemInput.sendKeys(item);
+    addNewBtn.click();
+  }
+
+  function removeItem(item) {
+    itemLinks.filter(function(elem) {
+      return elem.getText().then((text) => {
+        return text.includes(item);
+      });
+    }).then((foundLinks) => {
+      expect(foundLinks.length).toEqual(1);
+
+      // Found the item's link
+      const itemLink = foundLinks[0];
+
+      // Get the item's close button
+      const itemCloseBtn = itemLink.element(by.css('button.close'));
+      itemCloseBtn.click();
+    });
+
+  }
+
   it('should have initial items', function() {
     browser.get(ROOT_URL);
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
@@ -41,14 +68,11 @@ describe('WebStarter', function() {
 
     expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
 
-    const itemInput = element(by.model('newThing'));
-    const newItem = '123';
-    const addNewBtn = element(by.css('.btn-add-new'));
+    addItem('123');
+    expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
+    removeItem('123');
 
-    itemInput.sendKeys(newItem);
-    addNewBtn.click().then(() => {
-      expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT + 1);
-    });
+    expect(thingList.count()).toEqual(INITIAL_ITEM_COUNT);
 
     logout();
   });

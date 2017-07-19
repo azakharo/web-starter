@@ -12,7 +12,7 @@ header#banner.hero-unit
       h1.page-header Features:
       ul.nav.nav-tabs.nav-stacked.col-md-4.col-lg-4.col-sm-6(ng-repeat='thing in awesomeThings')
         li
-          a(href='#', tooltip='{{thing.info}}')
+          a.item-link(href='#', tooltip='{{thing.info}}')
             | {{thing.name}}
             button.close(type='button', ng-click='deleteThing(thing)') ×
 

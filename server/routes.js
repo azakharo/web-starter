@@ -29,8 +29,8 @@ module.exports = function(app) {
       res.sendStatus(404);
     });
 
-  // All other routes should redirect to the index.html
-  app.route('/*')
+  // All other routes (except '/docs') should redirect to the index.html
+  app.route('/(!docs)*')
     .get(function(req, res) {
       res.sendFile(path.resolve(app.get('appPath') + '/index.html'));
     });

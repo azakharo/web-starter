@@ -8,8 +8,13 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const express = require('express');
+const path = require('path');
 const mongoose = require('mongoose');
 const config = require('./config/environment');
+// Swagger
+const swaggerTools = require('swagger-tools');
+const YAML = require('yamljs');
+const swaggerDoc = YAML.load(path.join(__dirname, 'swagger.yaml'));
 
 // Connect to database
 mongoose.Promise = Promise;
@@ -32,6 +37,12 @@ const socketio = require('socket.io')(server, {
 require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);
+
+// Swagger
+swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+  // Serve the Swagger documents and Swagger UI
+  app.use(middleware.swaggerUi());
+});
 
 // Start server
 server.listen(config.port, config.ip, function () {

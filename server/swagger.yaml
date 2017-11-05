@@ -1,60 +1,118 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "0.0.1"
-  title: Hello World App
-# during dev, should point to your local machine
-host: localhost:10010
-# basePath prefixes all resource paths 
-basePath: /
-# 
+  description: >-
+    WebStarter is a boilerplate project. It's based on Angular Fullstack
+    generator. It contains both: client and server.
+  version: 1.0.0
+  title: WebStarter
+  contact:
+    email: zangular@yandex.ru
+host: '127.0.0.1:9000'
+basePath: /api
 schemes:
-  # tip: remove http to make production-grade
   - http
-  - https
-# format of bodies a client can send (Content-Type)
 consumes:
   - application/json
-# format of the responses to the client (Accepts)
 produces:
   - application/json
 paths:
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
+  /things:
     get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      tags:
+        - things
+      summary: List all thing
+      description: ''
+      operationId: index
       responses:
-        "200":
-          description: Success
+        '200':
+          description: All things stored
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
+            type: array
+            items:
+              $ref: '#/definitions/Thing'
+    post:
+      tags:
+        - things
+      summary: Add a new thing
+      description: ''
+      operationId: create
+      parameters:
+        - name: thing
+          in: body
+          description: Thing to be added
+          required: true
           schema:
-            $ref: "#/definitions/ErrorResponse"
-  /swagger:
-    x-swagger-pipe: swagger_raw
-# complex objects have schema definitions
+            $ref: '#/definitions/Thing'
+      responses:
+        '201':
+          description: The thing has been added successfully
+          schema:
+            $ref: '#/definitions/Thing'
+  '/things/{thingId}':
+    parameters:
+      - name: thingId
+        in: path
+        description: Thing ID
+        required: true
+        type: string
+    get:
+      tags:
+        - things
+      summary: Get thing by ID
+      description: Returns a single thing
+      operationId: show
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Thing'
+        '404':
+          description: Thing not found
+    put:
+      tags:
+        - things
+      summary: Update an existing thing
+      description: ''
+      operationId: update
+      parameters:
+        - name: thing
+          in: body
+          description: Thing to update the existing one
+          required: true
+          schema:
+            $ref: '#/definitions/Thing'
+      responses:
+        '200':
+          description: successful update
+        '400':
+          description: Invalid content supplied
+        '404':
+          description: Thing not found
+    delete:
+      tags:
+        - things
+      summary: Deletes a thing
+      description: ''
+      operationId: destroy
+      responses:
+        '200':
+          description: The thing has been deleted successfully
+        '404':
+          description: Thing not found
 definitions:
-  HelloWorldResponse:
+  Thing:
+    type: object
     required:
-      - message
+      - name
     properties:
-      message:
+      _id:
         type: string
-  ErrorResponse:
-    required:
-      - message
-    properties:
-      message:
+        readOnly: true
+      name:
         type: string
+        example: Greate feature of Angular Fullstack Generator
+      info:
+        type: string
+      active:
+        type: boolean
+        default: true

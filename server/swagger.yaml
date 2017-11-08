@@ -8,7 +8,7 @@ info:
   contact:
     email: zangular@yandex.ru
 host: '127.0.0.1:9000'
-basePath: /api
+basePath: /
 schemes:
   - http
 consumes:
@@ -16,13 +16,11 @@ consumes:
 produces:
   - application/json
 paths:
-  /things:
+  /api/things:
     get:
       tags:
         - things
       summary: List all thing
-      description: ''
-      operationId: index
       responses:
         '200':
           description: All things stored
@@ -34,12 +32,9 @@ paths:
       tags:
         - things
       summary: Add a new thing
-      description: ''
-      operationId: create
       parameters:
-        - name: thing
+        - name: new thing
           in: body
-          description: Thing to be added
           required: true
           schema:
             $ref: '#/definitions/Thing'
@@ -48,7 +43,11 @@ paths:
           description: The thing has been added successfully
           schema:
             $ref: '#/definitions/Thing'
-  '/things/{thingId}':
+        '400':
+          description: name is missing
+        '401':
+          $ref: '#/responses/StdResp401'
+  '/api/things/{thingId}':
     parameters:
       - name: thingId
         in: path
@@ -60,7 +59,6 @@ paths:
         - things
       summary: Get thing by ID
       description: Returns a single thing
-      operationId: show
       responses:
         '200':
           description: successful operation
@@ -72,34 +70,31 @@ paths:
       tags:
         - things
       summary: Update an existing thing
-      description: ''
-      operationId: update
       parameters:
-        - name: thing
+        - name: new thing value
           in: body
-          description: Thing to update the existing one
           required: true
           schema:
             $ref: '#/definitions/Thing'
       responses:
         '200':
           description: successful update
-        '400':
-          description: Invalid content supplied
+        '401':
+          $ref: '#/responses/StdResp401'
         '404':
           description: Thing not found
     delete:
       tags:
         - things
-      summary: Deletes a thing
-      description: ''
-      operationId: destroy
+      summary: Delete thing
       responses:
         '200':
           description: The thing has been deleted successfully
+        '401':
+          $ref: '#/responses/StdResp401'
         '404':
           description: Thing not found
-  /users:
+  /api/users:
     get:
       tags:
         - users
@@ -111,39 +106,50 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
+        '401':
+          $ref: '#/responses/StdResp401'
     post:
       tags:
         - users
-      summary: Add a new user
-      description: ''
+      summary: Add new user
       parameters:
-        - name: user
+        - name: new user
           in: body
-          description: User to be added
           required: true
           schema:
             $ref: '#/definitions/User'
+      produces:
+        - application/json
+        - text/plain
       responses:
         '200':
           description: The user has been added successfully
-  /users/me:
+          schema:
+            properties:
+              token:
+                type: string
+        '401':
+          $ref: '#/responses/StdResp401'
+        '403':
+          description: 'something wrong with input data, probably with email'
+          schema:
+            type: string
+            example: The specified email address is already in use.
+  /api/users/me:
     get:
       tags:
         - users
       summary: Get current user
       responses:
         '200':
-          description: successful operation
+          description: OK
           schema:
             $ref: '#/definitions/User'
-        '404':
-          description: No current user found
-  '/users/{userId}':
+        '401':
+          $ref: '#/responses/StdResp401'
+  '/api/users/{userId}':
     parameters:
-      - name: userId
-        in: path
-        required: true
-        type: string
+      - $ref: '#/parameters/userId'
     get:
       tags:
         - users
@@ -151,31 +157,31 @@ paths:
       description: Returns a single user
       responses:
         '200':
-          description: successful operation
+          description: OK
           schema:
             $ref: '#/definitions/User'
+        '401':
+          $ref: '#/responses/StdResp401'
         '404':
           description: User not found
     delete:
       tags:
         - things
       summary: Deletes a thing
-      description: ''
       responses:
         '200':
-          description: The thing has been deleted successfully
+          description: OK
+        '401':
+          $ref: '#/responses/StdResp401'
         '404':
-          description: Thing not found
-  '/users/{userId}/password':
+          description: Not found
+  '/api/users/{userId}/password':
     put:
       tags:
         - users
       summary: Change user password
       parameters:
-        - name: userId
-          in: path
-          required: true
-          type: string
+        - $ref: '#/parameters/userId'
         - name: passwords
           in: body
           schema:
@@ -189,9 +195,11 @@ paths:
                 type: string
       responses:
         '200':
-          description: successful update
+          description: OK
         '400':
           description: Invalid content supplied
+        '401':
+          $ref: '#/responses/StdResp401'
   /auth/local:
     post:
       tags:
@@ -214,6 +222,15 @@ paths:
       responses:
         '200':
           description: The user has been added logged in
+          schema:
+            properties:
+              token:
+                type: string
+                description: Auth token
+            required:
+              - token
+        '401':
+          $ref: '#/responses/StdResp401'
 definitions:
   Thing:
     type: object
@@ -247,3 +264,14 @@ definitions:
         type: string
       role:
         type: string
+responses:
+  StdResp401:
+    description: UNAUTHORIZED
+    schema:
+      type: string
+parameters:
+  userId:
+    name: userId
+    in: path
+    required: true
+    type: string

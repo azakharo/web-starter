@@ -447,6 +447,15 @@ module.exports = function (grunt) {
             from: "serveClient: config.env !== 'production',", // jshint ignore:line
             to: 'serveClient: true,'
           }]
+      },
+      swaggerHost: {
+        src: ['dist/server/swagger.yaml'],
+        overwrite: true,
+        replacements: [
+          {
+            from: '127.0.0.1:9000',
+            to: '127.0.0.1:8080'
+          }]
       }
     },
 
@@ -576,7 +585,8 @@ module.exports = function (grunt) {
     'uglifyJs',
     'rev',
     'usemin',
-    'replace:appVer'
+    'replace:appVer',
+    'replace:swaggerHost'
   ]);
 
   grunt.registerTask('build-debug', [
@@ -587,7 +597,8 @@ module.exports = function (grunt) {
     'copy:tmp2dist',
     'copy:bowerComponents2dist',
     'replace:appVer',
-    'replace:serveClient'
+    'replace:serveClient',
+    'replace:swaggerHost'
   ]);
 
   grunt.registerTask('default', [

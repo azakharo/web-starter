@@ -8,6 +8,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose');
 const config = require('./config/environment');
@@ -29,6 +30,7 @@ if(config.seedDB) { require('./config/seed'); }
 
 // Setup server
 const app = express();
+app.use(cors())
 const server = require('http').createServer(app);
 const socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',

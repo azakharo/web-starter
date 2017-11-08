@@ -99,6 +99,121 @@ paths:
           description: The thing has been deleted successfully
         '404':
           description: Thing not found
+  /users:
+    get:
+      tags:
+        - users
+      summary: List all users
+      responses:
+        '200':
+          description: All users registered
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      tags:
+        - users
+      summary: Add a new user
+      description: ''
+      parameters:
+        - name: user
+          in: body
+          description: User to be added
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: The user has been added successfully
+  /users/me:
+    get:
+      tags:
+        - users
+      summary: Get current user
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: No current user found
+  '/users/{userId}':
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        type: string
+    get:
+      tags:
+        - users
+      summary: Get user by ID
+      description: Returns a single user
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        '404':
+          description: User not found
+    delete:
+      tags:
+        - things
+      summary: Deletes a thing
+      description: ''
+      responses:
+        '200':
+          description: The thing has been deleted successfully
+        '404':
+          description: Thing not found
+  '/users/{userId}/password':
+    put:
+      tags:
+        - users
+      summary: Change user password
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: string
+        - name: passwords
+          in: body
+          schema:
+            required:
+              - oldPassword
+              - newPassword
+            properties:
+              oldPassword:
+                type: string
+              newPassword:
+                type: string
+      responses:
+        '200':
+          description: successful update
+        '400':
+          description: Invalid content supplied
+  /auth/local:
+    post:
+      tags:
+        - users
+      summary: login
+      parameters:
+        - name: credentials
+          in: body
+          description: email and password
+          required: true
+          schema:
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '200':
+          description: The user has been added logged in
 definitions:
   Thing:
     type: object
@@ -116,3 +231,19 @@ definitions:
       active:
         type: boolean
         default: true
+  User:
+    type: object
+    required:
+      - name
+      - email
+      - role
+    properties:
+      _id:
+        type: string
+        readOnly: true
+      name:
+        type: string
+      email:
+        type: string
+      role:
+        type: string

@@ -33,8 +33,8 @@ module.exports = function(app) {
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
-      mongooseConnection: mongoose.connection,
-      db: 'projects'
+      mongooseConnection: mongoose.connection
+      // db: 'starter'
     })
   }));
 

@@ -1,6 +1,6 @@
 {
-  "name": "projects",
-  "version": "0.0.0",
+  "name": "webstarter",
+  "version": "1.0.0",
   "main": "server/app.js",
   "dependencies": {
     "body-parser": "1.18.2",

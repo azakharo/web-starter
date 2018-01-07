@@ -479,7 +479,7 @@ module.exports = function (grunt) {
 
     shell: {
       mocha: {
-        command: 'mocha -- server/**/*.spec.js',
+        command: 'mocha --exit server/**/*.spec.js',
         options: {
           execOptions: {
             env: {

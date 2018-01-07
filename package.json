@@ -69,7 +69,7 @@
   },
   "scripts": {
     "start": "node server/app.js",
-    "test": "cross-env NODE_ENV=test mocha -- server/**/*.spec.js"
+    "test": "cross-env NODE_ENV=test mocha --exit server/**/*.spec.js"
   },
   "private": true
 }

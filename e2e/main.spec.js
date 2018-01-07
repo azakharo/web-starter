@@ -11,7 +11,7 @@ describe('WebStarter', function() {
   const NEW_ITEM = '1234';
 
   function login() {
-    browser.get(`${ROOT_URL}${LOGIN_PATH}`);
+    browser.get(`${ROOT_URL}#/${LOGIN_PATH}`);
 
     const usernameInput = element(by.model('user.email'));
     const passwdIntput = element(by.model('user.password'));

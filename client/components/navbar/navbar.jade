@@ -45,7 +45,7 @@ nav.navbar.navbar-default(ng-controller='NavbarCtrl')
         li(ng-show='isLoggedIn()')
           p.navbar-text Hello {{ getCurrentUser().name }}
 
-        li(ng-show='isLoggedIn()', ng-class='{active: isActive("/settings")}')
+        li(ng-show='isLoggedIn() && getCurrentUser().provider === "local"', ng-class='{active: isActive("/settings")}')
           a(href='/settings')
             span.fa.fa-cog
 
